@@ -6,10 +6,23 @@
     <h2>SaVeR</h2>
     <h3>(<u>S</u>eparated <u>V</u>alues <u>R</u>e-writer)</h3>
     <table>
-    <tr><td colspan="2">split input on<input type="radio" name="split_type" value="newline" class="watch" checked>newline<input type="radio" name="split_type" value="whitespace" class="watch">whitespace (includes tabs)<input type="radio" name="split_type" value="comma" class="watch">comma<input type="radio" name="split_type" value="character" class="watch">character<input type="text" id="split_char" size="1" maxlength="1" value="|" class="watch"></td></tr>
-    <tr><td colspan="2">quote values<input type="radio" name="quote_type" value="smart" class="watch" checked>smart<input type="radio" name="quote_type" value="never" class="watch">never<input type="radio" name="quote_type" value="always" class="watch">always&nbsp;&nbsp;quote character<input type="text" id="quote_char" size="1" maxlength="1" value="'" class="watch"></td></tr>
-    <tr><td colspan="2">output separator <input type="radio" name="join_type" value="comma" class="watch" checked>comma<input type="radio" name="join_type" value="tab" class="watch">tab<input type="radio" name="join_type" value="none" class="watch">none<input type="radio" name="join_type" value="character" class="watch">character<input type="text" id="join_char" size="1" maxlength="1" value="|" class="watch"></td></tr>
-    <tr><td colspan="2">add newlines<input type="checkbox" id="out_newlines" class="watch" >&nbsp;parentheses?<input type="checkbox" id="out_paren" class="watch">&nbsp;sort?<input type="checkbox" id="out_sort" class="watch">&nbsp;unique only?<input type="checkbox" id="out_unique" class="watch">&nbsp;<span id="unique_cnt"></span></td></tr>
+    <tr>
+        <td>Input Options</td>
+        <td>Output Options</td>
+    </tr>
+
+    <tr>
+        <td>split on<input type="radio" name="split_type" value="newline" class="watch" checked>newline<input type="radio" name="split_type" value="whitespace" class="watch">whitespace (includes tabs)<input type="radio" name="split_type" value="comma" class="watch">comma<input type="radio" name="split_type" value="character" class="watch">character<input type="text" id="split_char" size="1" maxlength="1" value="|" class="watch"></td>
+        <td>separator <input type="radio" name="join_type" value="comma" class="watch" checked>comma<input type="radio" name="join_type" value="tab" class="watch">tab<input type="radio" name="join_type" value="none" class="watch">none<input type="radio" name="join_type" value="character" class="watch">character<input type="text" id="join_char" size="1" maxlength="1" value="|" class="watch"></td>    
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>quote values<input type="radio" name="quote_type" value="smart" class="watch" checked>smart<input type="radio" name="quote_type" value="never" class="watch">never<input type="radio" name="quote_type" value="always" class="watch">always&nbsp;&nbsp;quote character<input type="text" id="quote_char" size="1" maxlength="1" value="'" class="watch"></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>add newlines<input type="checkbox" id="out_newlines" class="watch" >&nbsp;parentheses?<input type="checkbox" id="out_paren" class="watch">&nbsp;sort?<input type="checkbox" id="out_sort" class="watch">&nbsp;unique only?<input type="checkbox" id="out_unique" class="watch">&nbsp;<span id="unique_cnt"></span></td>
+    </tr>
     <tr><td>Input&nbsp;&nbsp;<span id="input_cnt"></span></td><td>Output&nbsp;&nbsp;<span id="output_cnt"></span>&nbsp;(focus and ctrl-a for 'select all')</td></tr>
     <tr><td><textarea class="watch" id="input" cols="60" rows="25"></textarea></td><td><textarea id="output" cols="60" rows="25"></textarea></td></tr>
     </table>

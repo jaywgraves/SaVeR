@@ -9,10 +9,10 @@
     <tr><td>split input on<input type="radio" name="split_type" value="newline" class="watch" checked>newline<input type="radio" name="split_type" value="whitespace" class="watch">whitespace (includes tabs)<input type="radio" name="split_type" value="comma" class="watch">comma<input type="radio" name="split_type" value="character" class="watch">character<input type="text" id="split_char" size="1" maxlength="1" value="|" class="watch"></td></tr>
     <tr><td>quote values<input type="radio" name="quote_type" value="smart" class="watch" checked>smart<input type="radio" name="quote_type" value="never" class="watch">never<input type="radio" name="quote_type" value="always" class="watch">always&nbsp;&nbsp;quote character<input type="text" id="quote_char" size="1" maxlength="1" value="'" class="watch"></td></tr>
     <tr><td>output separator <input type="radio" name="join_type" value="comma" class="watch" checked>comma<input type="radio" name="join_type" value="tab" class="watch">tab<input type="radio" name="join_type" value="none" class="watch">none<input type="radio" name="join_type" value="character" class="watch">character<input type="text" id="join_char" size="1" maxlength="1" value="|" class="watch"></td></tr>
-    <tr><td>add newlines<input type="checkbox" id="out_newlines" class="watch" >&nbsp;parentheses?<input type="checkbox" id="out_paren" class="watch">&nbsp;unique only?<input type="checkbox" id="out_unique" class="watch">&nbsp;<span id="unique_cnt"></span></td></tr>
+    <tr><td>add newlines<input type="checkbox" id="out_newlines" class="watch" >&nbsp;parentheses?<input type="checkbox" id="out_paren" class="watch">&nbsp;sort?<input type="checkbox" id="out_sort" class="watch">&nbsp;unique only?<input type="checkbox" id="out_unique" class="watch">&nbsp;<span id="unique_cnt"></span></td></tr>
     <tr><td>Input&nbsp;&nbsp;<span id="input_cnt"></span></td></tr>
     <tr><td><textarea class="watch" id="input" cols="40" rows="20"></textarea></td></tr>
-    <tr><td>Output (focus and ctrl-a for 'select all')</td></tr>
+    <tr><td>Output&nbsp;&nbsp;<span id="output_cnt"></span>&nbsp;(focus and ctrl-a for 'select all')</td></tr>
     <tr><td><textarea id="output" cols="80" rows="5"></textarea></td></tr>
     </table>
 
@@ -31,11 +31,14 @@ convert = function() {
     var join_char = $("#join_char").val();
     var out_newlines = $("#out_newlines").prop('checked');
     var out_paren = $("#out_paren").prop('checked');
+    var out_sort = $("#out_sort").prop('checked');
     var out_unique = $("#out_unique").prop('checked');
     var unique_cnt_node = $("#unique_cnt");
     unique_cnt_node.text("");
     var input_cnt_node = $("#input_cnt");
     input_cnt_node.text("");
+    var output_cnt_node = $("#output_cnt");
+    output_cnt_node.text("");
 
     switch (split_type) {
         case "newline":
@@ -58,6 +61,7 @@ convert = function() {
     var unique = new Array();
     var unique_cnt = 0;
     var input_cnt = 0;
+    var output_cnt = 0;
     $.each(data, function(index, item){
                  item = $.trim(item);
                  if (item) {
@@ -81,13 +85,20 @@ convert = function() {
                             break;
                     }
                     out.push(item);
+                    output_cnt += 1;
                  }
     })
     if (input_cnt) {
         input_cnt_node.text("(" + input_cnt + " total items.)")
     }
+    if (output_cnt) {
+        output_cnt_node.text("(" + output_cnt + " total items.)")
+    }
     if (unique_cnt) {
         unique_cnt_node.text("(" + unique_cnt + " items filtered.)");
+    }
+    if (out_sort) {
+        out.sort()
     }
 
     switch (join_type) {

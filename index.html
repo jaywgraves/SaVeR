@@ -1,17 +1,18 @@
 <html>
   <head>
-    <title>LISTr</title>
+    <title>SaVeR</title>
   </head>
   <body>
-    <h2>list converter</h2>
+    <h2>SaVeR</h2>
+    <h3>(<u>S</u>eparated <u>V</u>alues <u>R</u>e-writer)</h3>
     <table>
-    <tr><td>split input on<input type="radio" name="split_type" value="newline" class="watch" checked>newline<input type="radio" name="split_type" value="whitespace" class="watch">whitespace<input type="radio" name="split_type" value="character" class="watch">character<input type="text" id="split_char" size="1" maxlength="1" value="|" class="watch"></td></tr>
-    <tr><td>force quote<input type="checkbox" id="force_quote" class="watch">&nbsp;quote char<input type="text" id="quote_char" size="1" maxlength="1" value="'" class="watch"></td></tr>
-    <tr><td>output separator <input type="radio" name="join_type" value="comma" class="watch" checked>comma<input type="radio" name="join_type" value="tab" class="watch">tab<input type="radio" name="join_type" value="character" class="watch">character<input type="text" id="join_char" size="1" maxlength="1" value="|" class="watch"></td></tr>
+    <tr><td>split input on<input type="radio" name="split_type" value="newline" class="watch" checked>newline<input type="radio" name="split_type" value="whitespace" class="watch">whitespace (includes tabs)<input type="radio" name="split_type" value="comma" class="watch">comma<input type="radio" name="split_type" value="character" class="watch">character<input type="text" id="split_char" size="1" maxlength="1" value="|" class="watch"></td></tr>
+    <tr><td>quote values<input type="radio" name="quote_type" value="smart" class="watch" checked>smart<input type="radio" name="quote_type" value="never" class="watch">never<input type="radio" name="quote_type" value="always" class="watch">always&nbsp;&nbsp;quote character<input type="text" id="quote_char" size="1" maxlength="1" value="'" class="watch"></td></tr>
+    <tr><td>output separator <input type="radio" name="join_type" value="comma" class="watch" checked>comma<input type="radio" name="join_type" value="tab" class="watch">tab<input type="radio" name="join_type" value="none" class="watch">none<input type="radio" name="join_type" value="character" class="watch">character<input type="text" id="join_char" size="1" maxlength="1" value="|" class="watch"></td></tr>
     <tr><td>add newlines<input type="checkbox" id="out_newlines" class="watch" >&nbsp;parentheses?<input type="checkbox" id="out_paren" class="watch"></td></tr>
     <tr><td>Input</td></tr>
     <tr><td><textarea class="watch" id="input" cols="40" rows="20"></textarea></td></tr>
-    <tr><td>Output (ctrl-a for 'select all')</td></tr>
+    <tr><td>Output (focus and ctrl-a for 'select all')</td></tr>
     <tr><td><textarea id="output" cols="80" rows="5"></textarea></td></tr>
     </table>
 
@@ -24,7 +25,7 @@ convert = function() {
     var indata = $('#input').val();
     var split_type = $("[name='split_type']:checked").val();
     var split_char = $("#split_char").val();
-    var force_quote = $("#force_quote").prop('checked');
+    var quote_type = $("[name='quote_type']:checked").val();
     var quote_char = $("#quote_char").val();
     var join_type = $("[name='join_type']:checked").val();
     var join_char = $("#join_char").val();
@@ -38,6 +39,9 @@ convert = function() {
         case "whitespace":
             pat = "\\s";
             break;
+        case "comma":
+            pat = ',';
+            break;
         case "character":
             pat = '\\'+split_char;
             break;
@@ -49,9 +53,18 @@ convert = function() {
     $.each(data, function(index, item){
                  item = $.trim(item);
                  if (item) {
-                 if (isNaN(parseInt(item)) || force_quote) {
-                     item = quote_char + item + quote_char;
-                     } 
+                    switch (quote_type) {
+                        case "smart":
+                             if (isNaN(parseInt(item))) {
+                                 item = quote_char + item + quote_char;
+                             } 
+                            break;
+                        case "always":
+                            item = quote_char + item + quote_char;
+                            break;
+                        case "never":
+                            break;
+                }
                     out.push(item);
                  }
     })   
@@ -63,6 +76,9 @@ convert = function() {
         case "tab":
             sep = "\t";
             break;
+        case "none":
+            sep = '';
+            break;
         case "character":
             sep = join_char;
             break;
@@ -70,7 +86,6 @@ convert = function() {
     if (out_newlines) {
         sep += '\n'
     }
-    // join out using sep
     var outdata = out.join(sep);
     if (out_paren) {
         outdata = '(' + outdata + ')';

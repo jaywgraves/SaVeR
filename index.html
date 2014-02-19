@@ -16,7 +16,7 @@
         <td>separator <input type="radio" name="join_type" value="comma" class="watch" checked>comma<input type="radio" name="join_type" value="tab" class="watch">tab<input type="radio" name="join_type" value="none" class="watch">none<input type="radio" name="join_type" value="character" class="watch">character<input type="text" id="join_char" size="1" maxlength="1" value="|" class="watch"></td>    
     </tr>
     <tr>
-        <td>&nbsp;</td>
+        <td>remove header_row<input type="checkbox" id="header_row" class="watch" ></td>
         <td>quote values<input type="radio" name="quote_type" value="smart" class="watch" checked>smart<input type="radio" name="quote_type" value="never" class="watch">never<input type="radio" name="quote_type" value="always" class="watch">always&nbsp;&nbsp;quote character<input type="text" id="quote_char" size="1" maxlength="1" value="'" class="watch"></td>
     </tr>
     <tr>
@@ -35,6 +35,26 @@ convert = function() {
     var indata = $('#input').val();
     var split_type = $("[name='split_type']:checked").val();
     var split_char = $("#split_char").val();
+    var header_row_node = $('#header_row');
+    header_row_node.attr("disabled",true);
+    var header_row = false;
+    switch (split_type) {
+        case "newline":
+            pat = "\\n";
+            header_row_node.removeAttr("disabled");
+            header_row = header_row_node.prop('checked');
+            break;
+        case "whitespace":
+            pat = "\\s";
+            break;
+        case "comma":
+            pat = ',';
+            break;
+        case "character":
+            pat = '\\'+split_char;
+            break;
+    }
+    var out_newlines = $("#out_newlines").prop('checked');
     var quote_type = $("[name='quote_type']:checked").val();
     var quote_char = $("#quote_char").val();
     var join_type = $("[name='join_type']:checked").val();
@@ -50,22 +70,11 @@ convert = function() {
     var output_cnt_node = $("#output_cnt");
     output_cnt_node.text("");
 
-    switch (split_type) {
-        case "newline":
-            pat = "\\n";
-            break;
-        case "whitespace":
-            pat = "\\s";
-            break;
-        case "comma":
-            pat = ',';
-            break;
-        case "character":
-            pat = '\\'+split_char;
-            break;
-    }
     var re = new RegExp(pat);
     data = indata.split(re);
+    if (header_row) {
+        data.shift();
+    }
     var out = [];
     var unique = new Array();
     var unique_cnt = 0;

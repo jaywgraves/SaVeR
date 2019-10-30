@@ -12,15 +12,17 @@ One of my main use cases is creating a list for a SQL 'in' clause based on a spr
 
 I'll paste this into the left text box and choose the option to split on newlines.
 
+```
 123
 456
 789
+```
 
 on the right side I'll pick the options for:
 comma separator, smart quotes, and add parenthesis to get
 and get back
 
-(123,456,789)
+`(123,456,789)`
 
 which is easily pasted into an 'where key in' SQL clause.
 

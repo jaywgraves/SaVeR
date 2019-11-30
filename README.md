@@ -19,7 +19,9 @@ I'll paste this into the left text box and choose the option to split on newline
 ```
 
 on the right side I'll pick the options for:
-comma separator, smart quotes, and add parenthesis to get
+
+  comma separator, smart quotes, and add parenthesis
+
 and get back
 
 `(123,456,789)`

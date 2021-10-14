@@ -32,17 +32,17 @@
 <script>
 
 convert = function() {
-    var indata = $('#input').val();
-    var split_type = $("[name='split_type']:checked").val();
-    var split_char = $("#split_char").val();
-    var header_row_node = $('#header_row');
-    header_row_node.attr("disabled",true);
+    var indata = document.querySelector('#input').value;
+    var split_type = document.querySelector("[name='split_type']:checked").value;
+    var split_char = document.querySelector("#split_char").value;
+    var header_row_node = document.querySelector('#header_row');
+    header_row_node.disabled = true;
     var header_row = false;
     switch (split_type) {
         case "newline":
             pat = "\\n";
-            header_row_node.removeAttr("disabled");
-            header_row = header_row_node.prop('checked');
+            header_row_node.disabled = false;
+            header_row = header_row_node.checked;
             break;
         case "whitespace":
             pat = "\\s";
@@ -54,21 +54,21 @@ convert = function() {
             pat = '\\'+split_char;
             break;
     }
-    var out_newlines = $("#out_newlines").prop('checked');
-    var quote_type = $("[name='quote_type']:checked").val();
-    var quote_char = $("#quote_char").val();
-    var join_type = $("[name='join_type']:checked").val();
-    var join_char = $("#join_char").val();
-    var out_newlines = $("#out_newlines").prop('checked');
-    var out_paren = $("#out_paren").prop('checked');
-    var out_sort = $("#out_sort").prop('checked');
-    var out_unique = $("#out_unique").prop('checked');
-    var unique_cnt_node = $("#unique_cnt");
-    unique_cnt_node.text("");
-    var input_cnt_node = $("#input_cnt");
-    input_cnt_node.text("");
-    var output_cnt_node = $("#output_cnt");
-    output_cnt_node.text("");
+    var out_newlines = document.querySelector("#out_newlines").checked;
+    var quote_type = document.querySelector("[name='quote_type']:checked").value;
+    var quote_char = document.querySelector("#quote_char").value;
+    var join_type = document.querySelector("[name='join_type']:checked").value;
+    var join_char = document.querySelector("#join_char").value;
+    var out_newlines = document.querySelector("#out_newlines").checked;
+    var out_paren = document.querySelector("#out_paren").checked;
+    var out_sort = document.querySelector("#out_sort").checked;
+    var out_unique = document.querySelector("#out_unique").checked;
+    var unique_cnt_node = document.querySelector("#unique_cnt");
+    unique_cnt_node.textContent = "";
+    var input_cnt_node = document.querySelector("#input_cnt");
+    input_cnt_node.textContent = "";
+    var output_cnt_node = document.querySelector("#output_cnt");
+    output_cnt_node.textContent = "";
 
     var re = new RegExp(pat);
     data = indata.split(re);
@@ -80,8 +80,8 @@ convert = function() {
     var unique_cnt = 0;
     var input_cnt = 0;
     var output_cnt = 0;
-    $.each(data, function(index, item){
-                 item = $.trim(item);
+    data.forEach(function(item){
+                 item = item.trim();
                  if (item) {
                     input_cnt += 1;
                     if (out_unique && (item in unique)) {
@@ -106,9 +106,9 @@ convert = function() {
                     output_cnt += 1;
                  }
     })
-    if (input_cnt) {input_cnt_node.text("(" + input_cnt + " total items.)")}
-    if (output_cnt) {output_cnt_node.text("(" + output_cnt + " total items.)")}
-    if (unique_cnt) {unique_cnt_node.text("(" + unique_cnt + " items filtered.)");}
+    if (input_cnt) {input_cnt_node.textContent = "(" + input_cnt + " total items.)";}
+    if (output_cnt) {output_cnt_node.textContent = "(" + output_cnt + " total items.)";}
+    if (unique_cnt) {unique_cnt_node.textContent = "(" + unique_cnt + " items filtered.)";}
     if (out_sort) {out.sort()}
 
     switch (join_type) {
@@ -128,11 +128,12 @@ convert = function() {
     if (out_newlines) {sep += '\n'}
     var outdata = out.join(sep);
     if (out_paren) {outdata = '(' + outdata + ')';}
-    $("#output").val(outdata);
+    document.querySelector("#output").value = outdata;
 };
 
-$('.watch').on('change',convert);
-
+document.querySelectorAll('.watch').forEach(function(el) {
+  el.addEventListener('change', convert);
+});
 </script>
 
 </body>
